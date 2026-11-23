@@ -16,7 +16,6 @@ Add the plugin to your global config, alongside whatever you already have:
 // ~/.config/opencode/opencode.json
 {
   "plugins": [
-    "@kyan-plugins/run-meter",          // optional, unrelated
     "/path/to/token-totals"
   ]
 }
