@@ -2,6 +2,8 @@
 
 Per-model token totals across **every project on the device**, with the models you tick added up together.
 
+![The Token totals panel beside a session](docs/panel.png)
+
 Run History shows only the last 500 turns it happened to observe, and only while the plugin was loaded. This panel instead asks OpenCode's own stats endpoint for each local day, caches that day, and never reads it again — so the first run reads the whole history and every later look costs two requests.
 
 Everything stays local. No account, no network calls beyond the OpenCode server already running on your machine.
