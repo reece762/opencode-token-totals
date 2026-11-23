@@ -1,10 +1,17 @@
 {
-  "name": "opencode-token-usage-total",
+  "name": "opencode-token-totals",
   "version": "0.1.0",
-  "private": true,
-  "description": "Per-model token usage totals across all projects, from OpenCode's session stats, with an incremental day cache",
+  "description": "Per-model token totals across every project on the device, with an incremental one-request-per-day cache",
   "type": "module",
   "license": "MIT",
+  "keywords": [
+    "opencode",
+    "opencode-plugin",
+    "opencode-gui-plugin",
+    "tokens",
+    "usage",
+    "analytics"
+  ],
   "exports": {
     "./gui-experimental": "./dist/gui-experimental.cjs"
   },
@@ -14,7 +21,16 @@
   "scripts": {
     "build": "vite build",
     "dev": "vite build --watch",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "validate": "bun run scripts/validate.ts"
+  },
+  "peerDependencies": {
+    "@opencode/plugin": ">=2.2.0"
+  },
+  "peerDependenciesMeta": {
+    "@opencode/plugin": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@opencode/client": "2.3.0",
