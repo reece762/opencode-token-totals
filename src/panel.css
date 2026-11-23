@@ -156,8 +156,64 @@
 
 [data-slot="token-head-actions"] {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 4px;
+  min-width: 0;
+  margin-inline-start: auto;
+}
+
+[data-slot="token-section"] > div[data-slot="token-head-actions"] > [data-slot="token-head-actions"] {
+  margin-inline-start: auto;
+}
+
+[data-slot="token-select"] {
+  position: relative;
+  display: inline-flex;
+  min-width: 0;
+  max-width: 148px;
+}
+
+[data-slot="token-select"] select {
+  width: 100%;
+  min-width: 0;
+  height: 22px;
+  padding-block: 0;
+  padding-inline: 6px 18px;
+  border: 0;
+  border-radius: 5px;
+  background: var(--v2-background-bg-layer-01);
+  box-shadow: 0 0 0 0.5px var(--v2-border-border-base);
+  color: var(--v2-text-text-muted);
+  font: inherit;
+  font-size: 11px;
+  line-height: 16px;
+  font-variant-numeric: tabular-nums;
+  text-overflow: ellipsis;
+  cursor: pointer;
+  appearance: none;
+}
+
+[data-slot="token-select"] select:hover {
+  color: var(--v2-text-text-base);
+  background: var(--v2-background-bg-layer-02);
+}
+
+[data-slot="token-select"] select:focus-visible {
+  outline: 2px solid var(--v2-border-border-focus);
+  outline-offset: 1px;
+}
+
+[data-slot="token-select-chevron"] {
+  position: absolute;
+  inset-inline-end: 7px;
+  top: 50%;
+  width: 0;
+  height: 0;
+  margin-top: -2px;
+  border-block-start: 4px solid var(--v2-text-text-faint);
+  border-inline: 3px solid transparent;
+  pointer-events: none;
 }
 
 [data-slot="token-card"] {
