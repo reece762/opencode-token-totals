@@ -36,10 +36,16 @@ The desktop app bundles bun as its own CLI, so a machine without node or bun can
 
 ```powershell
 $env:BUN_BE_BUN="1"
-& "C:\Users\USERNAME\AppData\Local\Programs\ai.opencode.desktop\resources\opencode-cli.exe" run build
+$cli = Join-Path $env:LOCALAPPDATA "Programs\ai.opencode.desktop\resources\opencode-cli.exe"
+& $cli run build
 ```
 
-`opencode-cli.exe` is bun 1.4.4 with extra subcommands; `BUN_BE_BUN=1` makes `run` and `install` behave as plain bun. Drop the variable when you want its `api` subcommand instead.
+```bash
+# macOS / Linux
+BUN_BE_BUN=1 /Applications/OpenCode.app/Contents/Resources/opencode-cli run build
+```
+
+`opencode-cli.exe` is bun with extra subcommands; `BUN_BE_BUN=1` makes `run` and `install` behave as plain bun. Drop the variable when you want its `api` subcommand instead.
 
 ## Using it
 
@@ -152,28 +158,30 @@ Counts on a paid Go allowance will come out **higher** here than in the console 
 `scripts/validate.ts` runs the real refresh loop against a live server, then compares the cached sum with a single whole-range stats call. The two must match on all six fields, and it prints the request count so the caching promise is visible:
 
 ```
+cli: opencode-cli.exe (auto-detected)
 first run: 35 days fetched in 36 requests
 models cached: 15 (server reports 15)
-  steps:      cached=61049      server=61049      delta=0
-  input:      cached=163031526  server=163031526  delta=0
-  output:     cached=24095790   server=24095790   delta=0
-  reasoning:  cached=28703264   server=28703264   delta=0
-  cacheRead:  cached=8486074674 server=8486074674 delta=0
+  steps:      cached=61163      server=61163      delta=0
+  input:      cached=163171258  server=163171258  delta=0
+  output:     cached=24134999   server=24134999   delta=0
+  reasoning:  cached=28806679   server=28806679   delta=0
+  cacheRead:  cached=8512450738 server=8512450738 delta=0
   cacheWrite: cached=0          server=0          delta=0
 second look: 2 days refetched in 2 requests
 third look: 2 requests, totals unchanged=true
+day tiling: contiguous
 OK: the day cache reproduces the server's whole-range totals exactly
 ```
 
 Run it with the CLI's `api` subcommand available (no `BUN_BE_BUN`):
 
 ```bash
-bun run scripts/validate.ts
+bun run validate
 ```
 
-It shells out to `opencode-cli.exe` and therefore assumes Windows with the desktop app installed. Edit `cli` at the top of the file for another platform.
+It locates the desktop CLI itself: `OPENCODE_CLI` when set, else the usual install location per platform, else `opencode-cli` on the PATH. It prints which one it used, and exits with a message pointing at `OPENCODE_CLI` when none is found.
 
-The check exits non-zero and prints `MISMATCH: <fields>` if any bucket drifts, so it works as a regression guard after a server or client upgrade.
+The check exits non-zero and prints `MISMATCH: <fields>` if any bucket drifts, or `day tiling: GAP ...` if the local-midnight boundaries ever fail to tile (the failure mode a daylight-saving change could cause). That makes it a regression guard after a server or client upgrade.
 
 ## Compatibility
 
